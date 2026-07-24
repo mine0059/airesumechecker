@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sun, Moon, Check } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
@@ -24,6 +24,10 @@ function ProfileSection() {
   const toast = useToast();
   const [name, setName] = useState(user?.name || "");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (user?.name) setName(user.name);
+  }, [user?.name]);
 
   const dirty = name.trim() !== (user?.name || "") && name.trim().length > 0;
 

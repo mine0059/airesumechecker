@@ -1,7 +1,14 @@
 const dotenv = require("dotenv");
 const path = require("path");
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+// In production (Render) there is no .env file — env vars are set in the dashboard.
+// dotenv.config() silently ignores a missing file in v16, but v17 (dotenvx) may throw.
+// Wrap it so a missing file never crashes the process.
+try {
+  dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+} catch {
+  // .env not present — that's fine in production
+}
 
 const required = ["MONGO_URI", "JWT_SECRET"];
 const missing = required.filter((key) => !process.env[key]);

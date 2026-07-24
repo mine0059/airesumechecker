@@ -5,7 +5,11 @@ const User = require("../models/User");
 
 async function requireAuth(req, res, next) {
   try {
-    const token = req.cookies?.[env.cookieName];
+    // Check Authorization: Bearer header first (cross-origin / production)
+    // then fall back to httpOnly cookie (same-origin / local dev)
+    const authHeader = req.headers.authorization;
+    const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    const token = bearerToken || req.cookies?.[env.cookieName];
     if (!token) throw ApiError.unauthorized();
 
     const payload = verifyToken(token);

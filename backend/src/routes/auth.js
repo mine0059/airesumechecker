@@ -52,7 +52,7 @@ router.post(
     const user = await User.create({ name, email, passwordHash });
 
     issueSession(res, user);
-    res.status(201).json({ user });
+    res.status(201).json({ user, token: signToken({ sub: user._id.toString() }) });
   }),
 );
 
@@ -70,7 +70,7 @@ router.post(
     if (!ok) throw ApiError.unauthorized('Invalid credentials');
 
     issueSession(res, user);
-    res.status(200).json({ user });
+    res.status(200).json({ user, token: signToken({ sub: user._id.toString() }) });
   }),
 );
 

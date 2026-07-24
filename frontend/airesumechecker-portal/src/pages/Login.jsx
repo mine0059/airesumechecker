@@ -10,6 +10,7 @@ import {
 } from "@/components/auth/AuthShell";
 import AILogo from "@/components/layout/AILogo";
 import { useAuth } from "@/context/AuthContext";
+import { ColdStartNotice } from "@/components/ui/ColdStartNotice";
 
 export default function Login() {
   const { login } = useAuth();
@@ -104,6 +105,8 @@ export default function Login() {
               )}
             </AuthPrimaryButton>
           </div>
+
+          <ColdStartNotice loading={loading} className="mt-3" />
         </form>
 
         <div className="text-sm text-[var(--ink-muted)] text-center mt-8">

@@ -14,21 +14,12 @@ import History from "@/pages/History";
 import Settings from "@/pages/Settings";
 import { useAuth } from "@/context/AuthContext";
 
-import { Loader2 } from "lucide-react";
-import { ColdStartNotice } from "@/components/ui/ColdStartNotice";
+import { AppLoadingScreen } from "@/components/layout/AppLoadingScreen";
 
 function ProtectedShell() {
   const { user, loading } = useAuth();
   if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--bg)] text-[var(--ink-muted)] text-sm p-4">
-        <div className="flex items-center gap-2 mb-2 font-medium text-[var(--ink)]">
-          <Loader2 size={18} className="animate-spin text-[var(--accent)]" />
-          <span>Authenticating...</span>
-        </div>
-        <ColdStartNotice loading={loading} delayMs={2000} className="max-w-md mt-3" />
-      </div>
-    );
+    return <AppLoadingScreen />;
   }
   if (!user) return <Navigate to="/login" replace />;
   return <AppShell />;

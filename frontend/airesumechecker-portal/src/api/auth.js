@@ -1,11 +1,21 @@
-import { apiClient } from './client';
-// import { mockUser, loadMockUser, saveMockUser } from "@/mock/auth";
-// import { mockDelay } from "@/mock/_helpers";
+import { apiClient, TOKEN_KEY } from './client';
 
 export const authApi = {
-  register: (payload) => apiClient.post('/auth/register', payload).then((r) => r.data),
-  login: (payload) => apiClient.post('/auth/login', payload).then((r) => r.data),
-  logout: () => apiClient.post('/auth/logout').then((r) => r.data),
+  register: (payload) =>
+    apiClient.post('/auth/register', payload).then((r) => {
+      if (r.data.token) localStorage.setItem(TOKEN_KEY, r.data.token);
+      return r.data;
+    }),
+  login: (payload) =>
+    apiClient.post('/auth/login', payload).then((r) => {
+      if (r.data.token) localStorage.setItem(TOKEN_KEY, r.data.token);
+      return r.data;
+    }),
+  logout: () =>
+    apiClient.post('/auth/logout').then((r) => {
+      localStorage.removeItem(TOKEN_KEY);
+      return r.data;
+    }),
   me: () => apiClient.get('/auth/me').then((r) => r.data),
   updateProfile: (payload) => apiClient.patch('/auth/profile', payload).then((r) => r.data),
   changePassword: (payload) => apiClient.patch('/auth/password', payload).then((r) => r.data),
